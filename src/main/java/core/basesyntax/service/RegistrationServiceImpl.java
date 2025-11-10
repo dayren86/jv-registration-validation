@@ -9,6 +9,19 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Override
     public User register(User user) {
-        return null;
+        if (storageDao.get(user.getLogin()) != null) {
+            throw new RegistrationException("User already exists");
+        }
+        if (user.getLogin().length() <= 6) {
+            throw new RegistrationException("Login less than 6 characters");
+        }
+        if (user.getPassword().length() <= 6) {
+            throw new RegistrationException("Password less than 6 characters");
+        }
+        if (user.getAge() < 18) {
+            throw new RegistrationException("Age under 18");
+        }
+
+        return storageDao.add(user);
     }
 }
