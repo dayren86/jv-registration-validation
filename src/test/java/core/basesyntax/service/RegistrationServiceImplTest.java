@@ -1,14 +1,15 @@
 package core.basesyntax.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import core.basesyntax.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class RegistrationServiceImplTest {
-    RegistrationService registrationService = new RegistrationServiceImpl();
-    User user;
+    private RegistrationService registrationService = new RegistrationServiceImpl();
+    private User user;
 
     @BeforeEach
     void setUp() {
