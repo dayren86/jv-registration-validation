@@ -8,79 +8,59 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class RegistrationServiceImplTest {
-    private RegistrationService registrationService = new RegistrationServiceImpl();
+    private RegistrationService registrationService;
     private User user;
 
     @BeforeEach
     void setUp() {
+        registrationService = new RegistrationServiceImpl();
         user = new User("testLogin", "corectPasswod", 25);
     }
 
     @Test
-    void checkRegistrationUser_Ok() {
+    void register_validUser_Ok() {
         User register = registrationService.register(user);
 
         assertEquals(user, register);
     }
 
     @Test
-    void checkingForAnIncorrectLogin() {
+    void register_shortLogin_notOk() {
         user.setLogin("log");
 
         assertThrows(RegistrationException.class, () -> registrationService.register(user));
     }
 
     @Test
-    void checkingForAnIncorrectLoginMoreThan25() {
-        user.setLogin("logeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
-
-        assertThrows(RegistrationException.class, () -> registrationService.register(user));
-    }
-
-    @Test
-    void checkingForAnIncorrectPassword() {
+    void register_shortPassword_notOk() {
         user.setPassword("111");
 
         assertThrows(RegistrationException.class, () -> registrationService.register(user));
     }
 
     @Test
-    void checkingForAnIncorrectPasswordMoreThan25() {
-        user.setPassword("11111111111111111111111111111111");
-
-        assertThrows(RegistrationException.class, () -> registrationService.register(user));
-    }
-
-    @Test
-    void checkingForAnIncorrectAge() {
+    void register_incorrectAge_notOk() {
         user.setAge(15);
 
         assertThrows(RegistrationException.class, () -> registrationService.register(user));
     }
 
     @Test
-    void checkingForAnIncorrectAge90() {
-        user.setAge(90);
-
-        assertThrows(RegistrationException.class, () -> registrationService.register(user));
-    }
-
-    @Test
-    void checkingForAnNullLogin() {
+    void register_nullLogin_notOk() {
         user.setLogin(null);
 
         assertThrows(RegistrationException.class, () -> registrationService.register(user));
     }
 
     @Test
-    void checkingForAnNullPassword() {
+    void register_nullPassword_notOk() {
         user.setPassword(null);
 
         assertThrows(RegistrationException.class, () -> registrationService.register(user));
     }
 
     @Test
-    void checkingForAnNullAge() {
+    void register_nullAge_notOk() {
         user.setAge(null);
 
         assertThrows(RegistrationException.class, () -> registrationService.register(user));

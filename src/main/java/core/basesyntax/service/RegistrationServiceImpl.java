@@ -6,27 +6,33 @@ import core.basesyntax.model.User;
 
 public class RegistrationServiceImpl implements RegistrationService {
     private final StorageDao storageDao = new StorageDaoImpl();
+    private final int MIN_LOGIN_LENGTH = 6;
+    private final int MIN_PASSWORD_LENGTH = 6;
+    private final int MIN_AGE = 18;
 
     @Override
     public User register(User user) {
+        if (user.getLogin() == null) {
+            throw new RegistrationException("Login is null");
+        }
+        if (user.getLogin().length() < MIN_LOGIN_LENGTH) {
+            throw new RegistrationException("Login less than 6 characters");
+        }
         if (storageDao.get(user.getLogin()) != null) {
             throw new RegistrationException("User already exists");
         }
-        if (user.getLogin() == null
-                || user.getLogin().length() < 6
-                || user.getLogin().length() > 25) {
-            throw new RegistrationException("Login less than 6 characters");
+        if (user.getPassword() == null) {
+            throw new RegistrationException("Password null");
         }
-        if (user.getPassword() == null
-                || user.getPassword().length() < 6
-                || user.getPassword().length() > 25) {
+        if (user.getPassword().length() < MIN_PASSWORD_LENGTH) {
             throw new RegistrationException("Password less than 6 characters");
         }
-        if (user.getAge() == null
-                || user.getAge() < 18
-                || user.getAge() > 80) {
+        if (user.getAge() == null) {
+            throw new RegistrationException("Age is null");
+        }
+        if (user.getAge() < MIN_AGE) {
             throw new RegistrationException("Age is not correct. "
-                    + "Age must be no less than 18 and no more than 80");
+                    + "Age must be no less than 18 ");
         }
 
         return storageDao.add(user);
